@@ -1,0 +1,150 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:HTMLExtractor" mc:Ignorable="d" x:Class="HTMLExtractor.MainWindow"
+        Title="Data Extractor 1.1" Height="488.966" Width="525"
+    Icon="PhysicalFile.ico"
+    >
+    <Grid x:Name="layoutRoot">
+        <TabControl SelectedIndex="0">
+            <TabItem Header="Local Folder">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+                        <!--The folder selection area-->
+                        <RowDefinition Height="150"/>
+                        <RowDefinition Height="30"/>
+                        <!--The Progress Bar and number display-->
+                        <RowDefinition Height="*"/>
+                        <!--The textArea displaying results/errors etc-->
+                        <RowDefinition Height="25"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Select Folder" BorderBrush="Black">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <!--TB for folder path and LB showing number of files-->
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="0.4*" MaxWidth="100"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="GUIPathToFolder" Text=""/>
+                                <Button x:Name="BrowseButton" Content="Browse" Click="BrowseButton_Click" HorizontalAlignment="Right"/>
+                                <TextBlock x:Name="GUINumberOfFiles" Text="(No folder)" Grid.Column="1"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <RadioButton x:Name="RadioTopLevel" Content="Top-Level" Checked="RadioTopLevel_Checked" Unchecked="RadioTopLevel_Checked" VerticalAlignment="Center" Margin="10,0,0,0" IsChecked="True"/>
+                                <RadioButton Content="All files" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                <Button x:Name="LoadFolder" Content="Search This Path" Click="LoadFolder_Click" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                    <Grid Grid.Row="1">
+                        <TabControl>
+                            <TabItem Header="ABC...XYZ">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="Search for data in between two strings"/>
+                                    <StackPanel Grid.Row="1">
+                                        <TextBlock Text="Starting String :"/>
+                                        <TextBox x:Name="GUIString1" />
+                                        <TextBlock Text="Ending String :"/>
+                                        <TextBox x:Name="GUIString2"/>
+                                        <Button x:Name="GUIStringSearch" Content="Search" Click="GUIStringSearch_Click" HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Regex Pattern">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="Search for data as specified by a Regex pattern"/>
+                                    <StackPanel Grid.Row="1">
+                                        <TextBlock Text="Regex Pattern :"/>
+                                        <TextBox x:Name="GUIRegexQueryBox" />
+                                        <Button x:Name="GUIRegexSearch" Content="Search" Click="GUIRegexSearch_Click" HorizontalAlignment="Left"/>
+                                        <Button x:Name="GUICancelSearch" Content="Cancel Search" Click="GUICancelSearch_Click" HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Tag Content">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="Search for the content of an HTML Tag"/>
+                                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                                        <TextBlock Text="Tag Name : "/>
+                                        <TextBox x:Name="GUITagBox" Width="150" TextChanged="GUITagBox_TextChanged" />
+                                        <TextBlock x:Name="GUISampleShow" Text="" Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="2">
+                                        <TextBlock Text="Only consider tags that have these attributes :"/>
+                                        <TextBox x:Name="GUITagAttributeBox" Text="href class" TextWrapping="Wrap" AcceptsReturn="True" Grid.Row="2"/>
+                                        <Button x:Name="TagContentSearch" Content="Search" HorizontalAlignment="Left" Click="TagContentSearch_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="AdvancedTags">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="Multi-finding children-tags which fall under a parent." />
+                                    <StackPanel Grid.Row="1" Orientation="Vertical">
+                                        <TextBox AcceptsReturn="True" Height="60"/>
+                                        <Button Content="Search"/>
+                                    </StackPanel>
+                                    
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                    <!--<TextBox x:Name="TargetElement" HorizontalAlignment="Left" Height="23" Margin="103,115,0,0" TextWrapping="Wrap" Text="body" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="HTML Element" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="FolderArea" HorizontalAlignment="Left" Height="191" Margin="9,230,0,0" TextWrapping="Wrap" Text="(Results displayed here)" VerticalAlignment="Top" Width="493" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"/>
+                    <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="237,114,0,0" VerticalAlignment="Top" Width="75" Click="SearchButton_Click"/>
+                    <Button Content="Get links
+                            " HorizontalAlignment="Left" Margin="334,179,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+                    <Button Content="Regex Search" Click="Button_Click_1" HorizontalAlignment="Left" Margin="353,115,0,0" VerticalAlignment="Top" Width="75"/>-->
+                    <Grid Grid.Row="2" >
+                        <TextBlock Text="-/-" x:Name="GUIProgressNumber" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        <ProgressBar x:Name="GUIProgressBar" Value="0" Margin="80,0,0,0" Background="AliceBlue"/>
+                    </Grid>
+                    <TextBox x:Name="FolderArea" Grid.Row="3" TextWrapping="Wrap" Text="(Results displayed here)" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"/>
+                    <StackPanel Grid.Row="4" Orientation="Horizontal">
+                        <Button x:Name="GUIExportToExcel"  Click="GUIExportToExcel_Click" Content="Export To Excel" VerticalAlignment="Center"/>
+                        <Button x:Name="GUIExportToTextFile" Click="GUIExportToTextFile_Click" Content="Save as Text File" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Web Source" IsEnabled="False">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="300" Text="http://www.google.com" x:Name="AddressBar"/>
+                        <Button Content="Get Source" Click="PressNetExtraction"/>
+                        <Button Content="Back"/>
+                        <Button Content="Forw"/>
+                    </StackPanel>
+                    <TextBox Grid.Row="1" Text="(Source displayed here)" x:Name="SourceArea"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
